@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ElementRef } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy } from "@angular/core";
 
 let counters: {
   [key: string]: number;
@@ -66,6 +66,8 @@ export class XAMLActionBar {
 })
 export class XAMLLabel {
     @Input('text') text: string = '';
+    @Input('row') row!: number;
+    @Input('col') col!: number;
 }
 
 @Component({
@@ -79,6 +81,8 @@ export class XAMLButton {
     @Input('text') text: string = '';
     @Input('nsRouterLink') nsRouterLink!: Array<string>;
     @Output('tap') tap: EventEmitter<any> = new EventEmitter<any>();
+    @Input('row') row!: number;
+    @Input('col') col!: number;
 
     onTap($event) {
         this.tap.emit($event);
@@ -93,21 +97,28 @@ export class XAMLButton {
 })
 export class XAMLImage {
 
-    _src: string = '';
-    @Input('src')
-    public set src(v: string) {
-        if (v[0] == '~') {
-            this._src = v.slice(2);
-        } else {
-            this._src = v;
-        }
-    }
+  @Input('row') row!: number;
+  @Input('col') col!: number;
 
-    @Input('loadMode') loadMode: 'async' | 'sync' = 'async';
-
-    asyncAttrVal(): 'on' | 'off' {
-      return (this.loadMode == 'async') ? 'on' : 'off';
+  _src: string = '';
+  @Input('src')
+  public set src(v: string) {
+    try {
+      if (v[0] == '~') {
+        this._src = v.slice(2);
+      } else {
+          this._src = v;
+      } 
+    } catch (error) {
+      
     }
+  }
+
+  @Input('loadMode') loadMode: 'async' | 'sync' = 'async';
+
+  asyncAttrVal(): 'on' | 'off' {
+    return (this.loadMode == 'async') ? 'on' : 'off';
+  }
 }
 
 @Component({
@@ -121,12 +132,16 @@ export class XAMLImage {
     `,
 })
 export class XAMLStackLayout {
-    constructor(private elRef: ElementRef) { }
-    ngAfterContentInit() {
-        this.elRef.nativeElement.querySelectorAll('div.container-fluid > div.row > *').forEach((n, i) => {
-            n.classList.add('col-12')
-        });
-    }
+  @Input('row') row!: number;
+  @Input('col') col!: number;
+
+  constructor(private elRef: ElementRef) { }
+
+  ngAfterContentInit() {
+      this.elRef.nativeElement.querySelectorAll('div.container-fluid > div.row > *').forEach((n, i) => {
+          n.classList.add('col-12')
+      });
+  }
 }
 
 @Component({
@@ -141,41 +156,60 @@ export class XAMLStackLayout {
       </div>
     </div>
   </div>
-<!-- <div class="container-fluid">
-  <div class="row justify-content-center">
-    <div class="col-12 bg-dark">
-      <div class="h-100 d-flex flex-column">
-        <div class="row justify-content-center bg-danger">
-          <p>ROW 1 - fixed height</p>
-        </div>
-        <div class="row justify-content-center bg-primary flex-grow-1">
-          <p>ROW 2 - Flex</p>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="row">
-      <ng-content></ng-content>
-    </div>
-</div> -->
   `,
 })
-export class XAMLGridLayout {
-  @Input('rows') rows: string = '*';
-  @Input('cols') cols: string = '*';
+export class XAMLGridLayout implements OnDestroy {
+
+  isUpdatingLayout: boolean = false;
+
+  _rows: string = '*';
+  @Input('rows')
+  set rows(v: string) {
+    this._rows = v;
+    this.ngAfterContentInit();
+  }
+  get rows(): string {
+    return this._rows;
+  }
+
+  _columns: string = '*';
+  @Input('columns')
+  set columns(v: string) {
+    this._columns = v;
+    this.ngAfterContentInit();
+  }
+  get columns(): string {
+    return this._columns;
+  }
+
+  @Output('layoutChanged') layoutChanged: EventEmitter<any> = new EventEmitter();
+  get layoutChangedPresent(): boolean {
+    return this.layoutChanged.observers.length > 0;
+  }
+  layoutChangedHandlerId!: number;
+
+  @Input('row') row!: number;
+  @Input('col') col!: number;
+  
   gridId!: number;
 
   constructor(private elRef: ElementRef) { }
 
   ngAfterContentInit() {
+    if (this.isUpdatingLayout) return;
+    this.isUpdatingLayout = true;
     this.gridId = counters.grid++;
     let gridEl = this.elRef.nativeElement.querySelector('.grid');
-    for (let axis of ['rows', 'cols']) {
+    for (let axis of ['rows', 'columns']) {
       let gridAxis: string = '';
-      let axisSpaces: Array<string> = (axis == 'rows') ? this.rows.split(' ') : this.cols.split(' ');
+      let axisSpaces: Array<string> = (axis == 'rows') ? this.rows.split(' ') : this.columns.split(' ');
       for (let col of axisSpaces) {
-        if (col == '*') {
-          gridAxis += '1fr '
+        if (col.endsWith('*')) {
+          if (col == '*') {
+            gridAxis += '1fr '
+          } else {
+            gridAxis += `${col.replace('*', '')}fr `
+          }
         } else if (col == 'auto') {
           gridAxis += 'min-content '
         } else {
@@ -191,5 +225,16 @@ export class XAMLGridLayout {
       el.style.setProperty('grid-row', parseInt(row) + 1);
       el.style.setProperty('grid-column', parseInt(col) + 1);
     });
+
+    if (this.layoutChangedPresent) {
+      this.layoutChangedHandlerId = (document as any).registerAppEventHandler('bodyResize', this, 'layoutChanged', true);
+    }
+    this.isUpdatingLayout = false;
+  }
+
+  ngOnDestroy() {
+    if (this.layoutChangedPresent) {
+      (document as any).unregisterAppEventHandler('bodyResize', this.layoutChangedHandlerId);
+    }
   }
 }

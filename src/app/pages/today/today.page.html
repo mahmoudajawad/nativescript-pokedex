@@ -1,39 +1,30 @@
 <ActionBar title="Nativescript Pokédex!" [style.paddingTop]="16"></ActionBar>
 <StackLayout class="p-20">
   <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val'})"></Label>
+  <Label [text]="(pokemon$ | async)?.name"></Label>
+  <PlatformView platform="mobile">
+    <GridLayout columns="* * * * * * * *" background="black" height="100" (layoutChanged)="consoleLog($event)">
+      <Image *ngFor="let sprite of spritesList(); let i = index" [col]="i" [src]="(pokemon$ | async)?.sprites[sprite]" stretch="aspectFit"></Image>
+    </GridLayout>
+  </PlatformView>
   <PlatformView platform="web">
-    <ngb-carousel *ngIf="images">
-        <ng-template ngbSlide>
-          <div class="picsum-img-wrapper">
-            <img [src]="images[0]" alt="Random first slide">
-          </div>
-          <div class="carousel-caption">
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </div>
-        </ng-template>
-        <ng-template ngbSlide>
-          <div class="picsum-img-wrapper">
-            <img [src]="images[1]" alt="Random second slide">
-          </div>
-          <div class="carousel-caption">
-            <h3>Second slide label</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </div>
-        </ng-template>
-        <ng-template ngbSlide>
-          <div class="picsum-img-wrapper">
-            <img [src]="images[2]" alt="Random third slide">
-          </div>
-          <div class="carousel-caption">
-            <h3>Third slide label</h3>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-          </div>
-        </ng-template>
-      </ngb-carousel>
-    </PlatformView>
-    <PlatformView platform="mobile">
-      <Label text="Pokemon sprites Carousel goes here"></Label>
-    </PlatformView>
-    <Image src="~/assets/pokeapi_logo.png" loadMode="async" stretch="aspectFit"></Image>
+    <ngb-carousel *ngIf="images" class="bg-secondary card">
+      <ng-container
+        *ngFor="let sprite of spritesList()">
+        <ng-container *ngIf="(pokemon$ | async)?.sprites[sprite]">
+          <ng-template ngbSlide>
+            <div class="picsum-img-wrapper p-4 mb-4">
+              <Image class="p-4 mb-4" [src]="(pokemon$ | async)?.sprites[sprite]" stretch="none"></Image>
+            </div>
+            <div class="carousel-caption">
+              <h3 style="text-transform: capitalize;">{{ sprite.replace('_', ' ').replace('_', ' ') }}</h3>
+            </div>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+    </ngb-carousel>
+  </PlatformView>
+  <PlatformView platform="mobile">
+    <Label text="Pokemon sprites Carousel goes here"></Label>
+  </PlatformView>
 </StackLayout>

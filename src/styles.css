@@ -21,6 +21,7 @@ Page > GridLayout > div.container-fluid > div.row > div.col-12 > div.grid {
     align-items: center;
 }
 
+
 Image {
     width: 100%;
     height: 100%;
@@ -47,11 +48,4 @@ Button[text] {
     outline: none !important;
     box-shadow: none !important;
     cursor: default !important;
-}
-
-StackLayout * {
-    text-align: center;
-    align-items: center;
-    align-content: center;
-    margin: 0 auto;
 }

@@ -5,12 +5,38 @@
   <title>nativescript-pokedex</title>
   <base href="/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
-<body class="min-vh-100 min-vw-100">
+<body class="min-vh-100 min-vw-100" onresize="document.callAppEventHandler('bodyResize', event);">
   <app-root></app-root>
+
+  <script>
+    document.appEvents = {
+      bodyResize: {
+        counter: 0,
+        handlers: {}
+      }
+    }
+    document.callAppEventHandler = (eventName, $event) => {
+      Object.keys(document.appEvents[eventName].handlers).forEach((handlerId) => {
+        let handler = document.appEvents[eventName].handlers[handlerId];
+        if (handler.isObservable) {
+          handler.context[handler.handlerName].next($event);
+        } else {
+          handler.context[handler.handlerName]($event);
+        }
+      })
+    }
+    document.registerAppEventHandler = (eventName, context, handlerName, isObservable) => {
+      document.appEvents[eventName].handlers[document.appEvents[eventName].counter] = ({context: context, handlerName: handlerName, isObservable: isObservable});
+      return document.appEvents[eventName].counter++;
+    };
+    document.unregisterAppEventHandler = (eventName, handlerId) => {
+      document.appEvents[eventName].splice(handlerId, 1);
+    };
+  </script>
 </body>
 </html>
