@@ -3,14 +3,14 @@ import { Device, platformNames } from 'tns-core-modules/platform';
 import { DEVICE } from 'nativescript-angular/platform-providers';
 
 @Component({
-    selector: 'ScopeView',
+    selector: 'PlatformView',
     template: `
 <ng-container *ngIf="isValidScope()">
     <ng-content></ng-content>
 </ng-container>
 `
 })
-export class ScopeViewComponent {
+export class PlatformViewComponent {
     @Input('platform') platform!: 'web' | 'mobile' | 'android' | 'ios';
 
     constructor(@Inject(DEVICE) private device: Device) { }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XAMLPage, XAMLActionBar, XAMLLabel, XAMLButton, XAMLImage, XAMLStackLayout, XAMLGridLayout } from './components';
+import { XAMLPage, XAMLActionBar, XAMLLabel, XAMLButton, XAMLImage, XAMLStackLayout, XAMLGridLayout } from '@src/app/utils/xaml/components';
 
 
 @NgModule({

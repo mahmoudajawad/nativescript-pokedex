@@ -1,6 +1,7 @@
 <ActionBar title="Nativescript Pokédex!" [style.paddingTop]="16"></ActionBar>
 <StackLayout class="p-20">
-  <ScopeView platform="web">
+  <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val'})"></Label>
+  <PlatformView platform="web">
     <ngb-carousel *ngIf="images">
         <ng-template ngbSlide>
           <div class="picsum-img-wrapper">
@@ -30,9 +31,9 @@
           </div>
         </ng-template>
       </ngb-carousel>
-    </ScopeView>
-    <ScopeView platform="mobile">
+    </PlatformView>
+    <PlatformView platform="mobile">
       <Label text="Pokemon sprites Carousel goes here"></Label>
-    </ScopeView>
+    </PlatformView>
     <Image src="~/assets/pokeapi_logo.png" loadMode="async" stretch="aspectFit"></Image>
 </StackLayout>
