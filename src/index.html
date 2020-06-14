@@ -35,7 +35,7 @@
       return document.appEvents[eventName].counter++;
     };
     document.unregisterAppEventHandler = (eventName, handlerId) => {
-      document.appEvents[eventName].splice(handlerId, 1);
+      delete document.appEvents[eventName].handlers[handlerId];
     };
   </script>
 </body>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy, ContentChildren } from "@angular/core";
 
 let counters: {
   [key: string]: number;
@@ -66,8 +66,6 @@ export class XAMLActionBar {
 })
 export class XAMLLabel {
     @Input('text') text: string = '';
-    @Input('row') row!: number;
-    @Input('col') col!: number;
 }
 
 @Component({
@@ -81,8 +79,6 @@ export class XAMLButton {
     @Input('text') text: string = '';
     @Input('nsRouterLink') nsRouterLink!: Array<string>;
     @Output('tap') tap: EventEmitter<any> = new EventEmitter<any>();
-    @Input('row') row!: number;
-    @Input('col') col!: number;
 
     onTap($event) {
         this.tap.emit($event);
@@ -96,9 +92,6 @@ export class XAMLButton {
     `,
 })
 export class XAMLImage {
-
-  @Input('row') row!: number;
-  @Input('col') col!: number;
 
   _src: string = '';
   @Input('src')
@@ -132,8 +125,6 @@ export class XAMLImage {
     `,
 })
 export class XAMLStackLayout {
-  @Input('row') row!: number;
-  @Input('col') col!: number;
 
   constructor(private elRef: ElementRef) { }
 
@@ -160,13 +151,16 @@ export class XAMLStackLayout {
 })
 export class XAMLGridLayout implements OnDestroy {
 
+  beginUpdateLayout: boolean = false;
   isUpdatingLayout: boolean = false;
 
   _rows: string = '*';
   @Input('rows')
   set rows(v: string) {
     this._rows = v;
-    this.ngAfterContentInit();
+    if (this.beginUpdateLayout) {
+      this.ngAfterContentInit();
+    }
   }
   get rows(): string {
     return this._rows;
@@ -176,7 +170,9 @@ export class XAMLGridLayout implements OnDestroy {
   @Input('columns')
   set columns(v: string) {
     this._columns = v;
-    this.ngAfterContentInit();
+    if (this.beginUpdateLayout) {
+      this.ngAfterContentInit();
+    }
   }
   get columns(): string {
     return this._columns;
@@ -187,9 +183,6 @@ export class XAMLGridLayout implements OnDestroy {
     return this.layoutChanged.observers.length > 0;
   }
   layoutChangedHandlerId!: number;
-
-  @Input('row') row!: number;
-  @Input('col') col!: number;
   
   gridId!: number;
 
@@ -218,18 +211,12 @@ export class XAMLGridLayout implements OnDestroy {
       }
       gridEl.style.setProperty(`grid-template-${(axis == 'rows') ? 'rows' : 'columns'}`, gridAxis);
     }
-    
-    this.elRef.nativeElement.querySelectorAll('div.grid > *').forEach((el, i) => {
-      let row = (el.attributes.row) ? el.attributes.row.nodeValue : '0';
-      let col = (el.attributes.col) ? el.attributes.col.nodeValue : '0';
-      el.style.setProperty('grid-row', parseInt(row) + 1);
-      el.style.setProperty('grid-column', parseInt(col) + 1);
-    });
 
     if (this.layoutChangedPresent) {
       this.layoutChangedHandlerId = (document as any).registerAppEventHandler('bodyResize', this, 'layoutChanged', true);
     }
     this.isUpdatingLayout = false;
+    this.beginUpdateLayout = true;
   }
 
   ngOnDestroy() {

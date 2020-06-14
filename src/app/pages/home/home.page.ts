@@ -10,6 +10,7 @@ import { AppUtils } from '@src/app/utils/app-utils/app-utils';
 export class HomePage implements OnInit {
   title = 'nativescript-pokedex';
   gridLayoutRows!: string;
+  gridElementsRows!: Array<string>;
 
   constructor(private utils: AppUtils, private cdr: ChangeDetectorRef) { }
 
@@ -18,14 +19,12 @@ export class HomePage implements OnInit {
   }
 
   onLayoutChanged($event) {
-    if (this.utils.platform() == 'web') {
-      if (this.utils.screenWidth() > 640) {
-        this.gridLayoutRows = 'auto * auto 100';
-      } else {
-        this.gridLayoutRows = 'auto * auto';
-      }
+    if (this.utils.platform() == 'web' && this.utils.screenWidth() > 640) {
+      this.gridLayoutRows = '100 auto * auto 100';
+      this.gridElementsRows = ['1', '2', '3'];
     } else {
       this.gridLayoutRows = 'auto * auto';
+      this.gridElementsRows = ['0', '1', '2'];
     }
     this.cdr.detectChanges();
   }
