@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy, ContentChildren } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy, ContentChildren, OnInit } from "@angular/core";
 
 let counters: {
   [key: string]: number;
@@ -17,7 +17,7 @@ export class XAMLPage {
 @Component({
     selector: 'ActionBar',
     template: `
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg {{ (class) ? class : 'navbar-light bg-light' }}">
     <a class="navbar-brand" href="#">{{ title }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -56,6 +56,7 @@ export class XAMLPage {
 })
 export class XAMLActionBar {
     @Input('title') title: string = '';
+    @Input('class') class: string = '';
 }
 
 @Component({

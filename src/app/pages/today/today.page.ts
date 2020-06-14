@@ -31,8 +31,4 @@ export class TodayPage implements OnInit {
   spritesList(): Array<string> {
     return ['front_default', 'back_default', 'front_shiny', 'back_shiny', 'front_female', 'back_female', 'front_shiny_female', 'back_shiny_female'];
   }
-
-  consoleLog($event): void {
-    console.log($event);
-  }
 }

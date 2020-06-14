@@ -5,10 +5,10 @@ page {
     display: flex;
     flex-grow: 1;
 }
-Page > GridLayout, Page > GridLayout > div.container-fluid > div.row {
+GridLayout, GridLayout > div.container-fluid > div.row {
     min-width: 100%;
 }
-Page > GridLayout > div.container-fluid, Page > GridLayout > div.container-fluid > div.row > div.col-12 {
+GridLayout > div.container-fluid, GridLayout > div.container-fluid > div.row > div.col-12 {
     height: 100%;
     display: flex;
     flex-grow: 1;

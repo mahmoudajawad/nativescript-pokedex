@@ -12,20 +12,19 @@ export class AppUtils {
 
     debugLog = debugLog;
 
-    platformVal = (vals: { web?: any; mobile: any; android: any; ios: any; }) => {
-        return vals.mobile;
+    platformVal = (vals: { web?: any; mobile: any; android: any; ios: any; }, verbose: boolean = false) => {
+        return vals[this.platform(verbose)];
     }
 
     platform = (verbose: boolean = false): 'web' | 'mobile' | 'android' | 'ios' => {
         if (verbose) {
-            return 'mobile';
-        } else {
             if (this.device.os === platformNames.android) {
                 return 'android';
             } else if (this.device.os === platformNames.ios) {
                 return 'ios';
             }
         }
+        return 'mobile';
     }
 
     screenWidth = (): number => {

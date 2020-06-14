@@ -1,19 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ContentChild, ElementRef, TemplateRef } from '@angular/core';
 
 @Component({
     selector: 'PlatformView',
-    template: `
-<ng-container *ngIf="isValidScope()">
-    <ng-content></ng-content>
-</ng-container>
-`
+    template: `<ng-container *ngTemplateOutlet="web"></ng-container>`,
 })
 export class PlatformViewComponent {
-    @Input('platform') platform!: 'web' | 'mobile' | 'android' | 'ios';
-
-    constructor() { }
-
-    isValidScope() {
-        return (this.platform == 'web');
-    }
+    @Input('verbose') verbose: boolean = false;
+    @ContentChild('web', { static: true }) web: TemplateRef<ElementRef>;
 }

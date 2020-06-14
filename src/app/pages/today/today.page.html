@@ -1,28 +1,32 @@
-<ActionBar title="Nativescript Pokédex!" [style.paddingTop]="16"></ActionBar>
+<ActionBar title="Nativescript Pokédex!" class="navbar-dark bg-dark" [style.paddingTop]="16"></ActionBar>
 <StackLayout class="p-20">
-  <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val'})"></Label>
-  <Label [text]="(pokemon$ | async)?.name"></Label>
-  <PlatformView platform="mobile">
-    <GridLayout columns="* * * * * * * *" background="black" height="100" (layoutChanged)="consoleLog($event)">
+  <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val', android:'something for android', ios: 'something for ios'}, false)"></Label>
+  <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val', android:'something for android', ios: 'something for ios'}, true)"></Label>
+  <Label class="h3 text-center" text="#{{ (pokemon$ | async)?.id }}"></Label>
+  <Label class="h1 text-center" [text]="(pokemon$ | async)?.name"></Label>
+  <PlatformView>
+    <ng-template #mobile>
+    <GridLayout columns="* * * * * * * *" background="black" height="100">
       <Image *ngFor="let sprite of spritesList(); let i = index" [col]="i" [src]="(pokemon$ | async)?.sprites[sprite]" stretch="aspectFit"></Image>
     </GridLayout>
-  </PlatformView>
-  <PlatformView platform="web">
-    <ngb-carousel *ngIf="images" class="bg-secondary card">
-      <ng-container
-        *ngFor="let sprite of spritesList()">
-        <ng-container *ngIf="(pokemon$ | async)?.sprites[sprite]">
-          <ng-template ngbSlide>
-            <div class="picsum-img-wrapper p-4 mb-4">
-              <Image class="p-4 mb-4" [src]="(pokemon$ | async)?.sprites[sprite]" stretch="none"></Image>
-            </div>
-            <div class="carousel-caption">
-              <h3 style="text-transform: capitalize;">{{ sprite.replace('_', ' ').replace('_', ' ') }}</h3>
-            </div>
-          </ng-template>
+    </ng-template>
+    <ng-template #web>
+      <ngb-carousel class="bg-secondary card col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <ng-container
+          *ngFor="let sprite of spritesList()">
+          <ng-container *ngIf="(pokemon$ | async)?.sprites[sprite]">
+            <ng-template ngbSlide>
+              <div class="picsum-img-wrapper p-4 mb-4">
+                <Image class="p-4 mb-4" [src]="(pokemon$ | async)?.sprites[sprite]" stretch="none"></Image>
+              </div>
+              <div class="carousel-caption">
+                <h3 style="text-transform: capitalize;">{{ sprite.replace('_', ' ').replace('_', ' ') }}</h3>
+              </div>
+            </ng-template>
+          </ng-container>
         </ng-container>
-      </ng-container>
-    </ngb-carousel>
+      </ngb-carousel>
+    </ng-template>
   </PlatformView>
   <PlatformView platform="mobile">
     <Label text="Pokemon sprites Carousel goes here"></Label>

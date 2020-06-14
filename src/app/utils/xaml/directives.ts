@@ -4,10 +4,12 @@ import { Directive, Input, ElementRef } from "@angular/core";
     selector: '[row]'
 })
 export class XAMLRowDirective {
-    
+
+    @Input('rowSpan') rowSpan: string | number = 1;
     @Input('row')
     set row(v: string | number) {
-        this.elRef.nativeElement.style.setProperty('grid-row', parseInt((v as any)) + 1);
+        this.elRef.nativeElement.style.setProperty('grid-row-start', parseInt((v as any)) + 1);
+        this.elRef.nativeElement.style.setProperty('grid-row-end', parseInt((v as any)) + parseInt((this.rowSpan as any)) + 1);
     }
 
     constructor(private elRef: ElementRef) { }
@@ -19,9 +21,11 @@ export class XAMLRowDirective {
 })
 export class XAMLColDirective {
 
+    @Input('colSpan') colSpan: string | number = 1;
     @Input('col')
     set col(v: string | number) {
-        this.elRef.nativeElement.style.setProperty('grid-column', parseInt((v as any)) + 1);
+        this.elRef.nativeElement.style.setProperty('grid-column-start', parseInt((v as any)) + 1);
+        this.elRef.nativeElement.style.setProperty('grid-column-end', parseInt((v as any)) + parseInt((this.colSpan as any)) + 1);
     }
     
     constructor(private elRef: ElementRef) { }

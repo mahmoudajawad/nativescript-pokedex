@@ -6,7 +6,7 @@ import { debugLog } from '@src/app/utils/app-utils/app-utils.common';
 export class AppUtils {
     debugLog = debugLog;
 
-    platformVal = (vals: { web?: any; mobile: any; android: any; ios: any; }) => {
+    platformVal = (vals: { web?: any; mobile: any; android: any; ios: any; }, verbose: boolean = false) => {
         return vals.web;
     }
 
