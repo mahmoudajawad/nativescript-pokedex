@@ -1,9 +1,13 @@
-<ActionBar title="Pokémon of Today" class="navbar-dark bg-dark"></ActionBar>
+<ActionBar title="Lucky Pokémon!" class="navbar-dark bg-dark">
+  <ActionItem (tap)="getRandomPokemon()"
+      ios.systemIcon="9" ios.position="left"
+      android.systemIcon="ic_menu_rotate" android.position="actionBar"></ActionItem>
+</ActionBar>
 <Page>
   <GridLayout *ngIf="(pokemon$ | async) as pokemon; else loading" class="p-20 mt-5">
     <StackLayout>
       <Label class="h3 text-center" text="#{{ pokemon.number }}"></Label>
-      <Label class="h1 text-center" [text]="pokemon.name"></Label>
+      <Label class="h1 text-center" style="text-transform: capitalize;" [text]="utils.commaSeparatedToSpaced(pokemon.name)"></Label>
       <Label class="h5 text-center" [text]="pokemon.types.join(' ')"></Label>
       <PlatformView>
         <ng-template #mobile>

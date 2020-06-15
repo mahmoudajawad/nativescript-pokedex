@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { XAMLPage, XAMLActionBar, XAMLLabel, XAMLButton, XAMLImage, XAMLStackLayout, XAMLGridLayout } from '@src/app/utils/xaml/components';
-import { XAMLRowDirective, XAMLColDirective, /*XAMLRowSpanDirective, XAMLColSpanDirective*/ } from '@src/app/utils/xaml/directives';
+import { XAMLPage, XAMLPageRouterOutlet, XAMLActionBar, XAMLActionItem, XAMLLabel, XAMLButton, XAMLImage, XAMLStackLayout, XAMLGridLayout } from '@src/app/utils/xaml/components';
+import { XAMLRowDirective, XAMLColDirective, NSRouterLinkDirective } from '@src/app/utils/xaml/directives';
 
-let components = [XAMLPage, XAMLActionBar, XAMLLabel, XAMLButton, XAMLImage, XAMLStackLayout, XAMLGridLayout];
-let directives = [XAMLRowDirective, XAMLColDirective, /*XAMLRowSpanDirective, XAMLColSpanDirective*/];
+let components = [XAMLPage, XAMLPageRouterOutlet, XAMLActionBar, XAMLActionItem, XAMLLabel, XAMLButton, XAMLImage, XAMLStackLayout, XAMLGridLayout];
+let directives = [XAMLRowDirective, XAMLColDirective, NSRouterLinkDirective];
 
 @NgModule({
   declarations: [

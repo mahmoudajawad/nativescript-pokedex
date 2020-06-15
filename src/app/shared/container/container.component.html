@@ -1,0 +1,23 @@
+<PlatformView>
+    <ng-template #mobile>
+        <Page style.paddingTop="16">
+            <GridLayout rows="* 60">
+                <router-outlet row="0"></router-outlet>
+                <GridLayout row="1" columns="8 * 8 * 8" class="text-center" style.borderColor="black"
+                    style.borderWidth="1 0 0 0" style.padding="10">
+                    <GridLayout col="1" rows="* *" [style.color]="(isCurrentRoute('today')) ? 'blue' : 'gray'" [nsRouterLink]="['/', 'app', 'today']">
+                        <Label class="far" text="&#xf133;"></Label>
+                        <Label row="1" style.background="white" text="Today" class="far"></Label>
+                    </GridLayout>
+                    <GridLayout col="3" rows="* *" [style.color]="(isCurrentRoute('random')) ? 'blue' : 'gray'" [nsRouterLink]="['/', 'app', 'random']">
+                        <Label class="fas" text="&#xf522;"></Label>
+                        <Label row="1" text="Random"></Label>
+                    </GridLayout>
+                </GridLayout>
+            </GridLayout>
+        </Page>
+    </ng-template>
+    <ng-template #web>
+        <router-outlet></router-outlet>
+    </ng-template>
+</PlatformView>

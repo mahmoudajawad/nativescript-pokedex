@@ -1,4 +1,5 @@
-import { Directive, Input, ElementRef } from "@angular/core";
+import { Directive, Input, ElementRef, HostListener } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Directive({
     selector: '[row]'
@@ -29,4 +30,18 @@ export class XAMLColDirective {
     }
     
     constructor(private elRef: ElementRef) { }
+}
+
+@Directive({
+    selector: '[nsRouterLink]'
+})
+export class NSRouterLinkDirective {
+
+    @Input('nsRouterLink') nsRouterLink!: Array<string> | string;
+    
+    constructor(private router: Router) { }
+
+    @HostListener('click', ['$event']) onClick($event){
+        this.router.navigate((this.nsRouterLink as any))
+    }
 }

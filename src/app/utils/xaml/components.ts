@@ -22,6 +22,12 @@ export class XAMLPage {
 }
 
 @Component({
+  selector: 'page-router-outlet',
+  template: `<router-outlet></router-outlet>`,
+})
+export class XAMLPageRouterOutlet { }
+
+@Component({
     selector: 'ActionBar',
     template: `
   <nav class="navbar navbar-expand-lg {{ (class) ? class : 'navbar-light bg-light' }}">
@@ -67,6 +73,12 @@ export class XAMLActionBar {
 }
 
 @Component({
+  selector: 'ActionItem',
+  template: ``,
+})
+export class XAMLActionItem { }
+
+@Component({
     selector: 'Label',
     template: `{{ text }}`,
 })
@@ -77,13 +89,14 @@ export class XAMLLabel {
 @Component({
     selector: 'Button',
     template: `
-  <button [class]="class" (click)="onTap($event)" [routerLink]="nsRouterLink">{{ text }}</button>
+  <button [class]="class" (click)="onTap($event)">{{ text }}</button>
+  <!-- [routerLink]="nsRouterLink" -->
     `,
 })
 export class XAMLButton {
     @Input('class') class: string = '';
     @Input('text') text: string = '';
-    @Input('nsRouterLink') nsRouterLink!: Array<string>;
+    // @Input('nsRouterLink') nsRouterLink!: Array<string>;
     @Output('tap') tap: EventEmitter<any> = new EventEmitter<any>();
 
     onTap($event) {
