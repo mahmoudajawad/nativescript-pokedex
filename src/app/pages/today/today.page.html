@@ -1,34 +1,54 @@
 <ActionBar title="Nativescript Pokédex!" class="navbar-dark bg-dark" [style.paddingTop]="16"></ActionBar>
-<StackLayout class="p-20">
-  <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val', android:'something for android', ios: 'something for ios'}, false)"></Label>
-  <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val', android:'something for android', ios: 'something for ios'}, true)"></Label>
-  <Label class="h3 text-center" text="#{{ (pokemon$ | async)?.id }}"></Label>
-  <Label class="h1 text-center" [text]="(pokemon$ | async)?.name"></Label>
-  <PlatformView>
-    <ng-template #mobile>
-    <GridLayout columns="* * * * * * * *" background="black" height="100">
-      <Image *ngFor="let sprite of spritesList(); let i = index" [col]="i" [src]="(pokemon$ | async)?.sprites[sprite]" stretch="aspectFit"></Image>
-    </GridLayout>
-    </ng-template>
-    <ng-template #web>
-      <ngb-carousel class="bg-secondary card col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-        <ng-container
-          *ngFor="let sprite of spritesList()">
-          <ng-container *ngIf="(pokemon$ | async)?.sprites[sprite]">
-            <ng-template ngbSlide>
-              <div class="picsum-img-wrapper p-4 mb-4">
-                <Image class="p-4 mb-4" [src]="(pokemon$ | async)?.sprites[sprite]" stretch="none"></Image>
-              </div>
-              <div class="carousel-caption">
-                <h3 style="text-transform: capitalize;">{{ sprite.replace('_', ' ').replace('_', ' ') }}</h3>
-              </div>
-            </ng-template>
-          </ng-container>
+<Page>
+  <GridLayout *ngIf="(pokemon$ | async) as pokemon; else loading" class="p-20">
+    <StackLayout class="p-20">
+      <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val', android:'something for android', ios: 'something for ios'}, false)"></Label>
+      <Label [text]="utils.platformVal({web: 'This is web val', mobile: 'this is mobile val', android:'something for android', ios: 'something for ios'}, true)"></Label>
+      <Label class="h3 text-center" text="#{{ pokemon.number }}"></Label>
+      <Label class="h1 text-center" [text]="pokemon.name"></Label>
+      <Label class="h5 text-center" [text]="pokemon.types.join(' ')"></Label>
+      <PlatformView>
+        <ng-template #mobile>
+        <GridLayout columns="* * * * * * * *" background="black" height="100">
+          <Image *ngFor="let sprite of POKEMON_SPRITES; let i = index" [col]="i" [src]="pokemon.sprites[sprite]" stretch="aspectFit"></Image>
+        </GridLayout>
+        </ng-template>
+        <ng-template #web>
+          <ngb-carousel class="bg-secondary card col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mb-3">
+            <ng-container
+              *ngFor="let sprite of POKEMON_SPRITES">
+              <ng-container *ngIf="pokemon.sprites[sprite]">
+                <ng-template ngbSlide>
+                  <div class="picsum-img-wrapper p-4 mb-4">
+                    <Image class="p-4 mb-4" [src]="pokemon.sprites[sprite]" stretch="none"></Image>
+                  </div>
+                  <div class="carousel-caption">
+                    <h3 style="text-transform: capitalize;">{{ utils.camelCaseToSpaced(sprite) }}</h3>
+                  </div>
+                </ng-template>
+              </ng-container>
+            </ng-container>
+          </ngb-carousel>
+        </ng-template>
+      </PlatformView>
+      <GridLayout class="card text-white bg-info text-center" [rows]="'* * ' + '* '.repeat(pokemon.stats.length)" columns="* 3* 2* 2*">
+        <Label row="0" col="0" colSpan="4" class="card-header h3 text-dark bg-white" text="Pokémon Stats"></Label>
+        <Label row="1" col="0" class="h5 mt-2" text="ID"></Label>
+        <Label row="1" col="1" class="h5 mt-2" text="Name"></Label>
+        <Label row="1" col="2" class="h5 mt-2" text="Effort"></Label>
+        <Label row="1" col="3" class="h5 mt-2" text="Stat"></Label>
+        <ng-container *ngFor="let stat of pokemon.stats; let i = index">
+          <Label [row]="i + 2" col="0" class="h6" [text]="stat.id"></Label>
+          <Label [row]="i + 2" col="1" class="h6 text-center" style="text-transform: capitalize;" [text]="utils.commaSeparatedToSpaced(stat.name)"></Label>
+          <Label [row]="i + 2" col="2" class="h6" [text]="stat.effort"></Label>
+          <Label [row]="i + 2" col="3" class="h6" [text]="stat.baseStat"></Label>
         </ng-container>
-      </ngb-carousel>
-    </ng-template>
-  </PlatformView>
-  <PlatformView platform="mobile">
-    <Label text="Pokemon sprites Carousel goes here"></Label>
-  </PlatformView>
-</StackLayout>
+      </GridLayout>
+    </StackLayout>
+  </GridLayout>
+  <ng-template #loading>
+    <GridLayout class="" rows="*" columns="*">
+      <Label class="h1 text-center align-self-center" text="Loading..."></Label>
+    </GridLayout>
+  </ng-template>
+</Page>

@@ -5,20 +5,13 @@ page {
     display: flex;
     flex-grow: 1;
 }
-GridLayout, GridLayout > div.container-fluid > div.row {
+Page > GridLayout {
     min-width: 100%;
 }
-GridLayout > div.container-fluid, GridLayout > div.container-fluid > div.row > div.col-12 {
-    height: 100%;
-    display: flex;
-    flex-grow: 1;
-}
-Page > GridLayout > div.container-fluid > div.row > div.col-12 > div.grid {
+
+.grid {
     display: grid;
-    min-width: 100%;
-    justify-content: center;
-    justify-items: center;
-    align-items: center;
+    height: 100%;
 }
 
 

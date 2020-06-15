@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
-import { tap, take, map,  } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, tap, delay } from 'rxjs/operators';
 
 import { AppUtils } from '@src/app/utils/app-utils/app-utils';
 import { PokeApiService } from '@src/app/services/pokeApi.service';
-import { Observable } from 'rxjs';
+import { Pokemon, POKEMON_SPRITES } from '@src/app/models/pokemon';
 
 @Component({
   selector: 'page-today',
@@ -13,22 +13,27 @@ import { Observable } from 'rxjs';
 })
 export class TodayPage implements OnInit {
 
-  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+  POKEMON_SPRITES: Array<string> = POKEMON_SPRITES;
+  isLoading: boolean = true;
+  pokemon$!: Observable<Pokemon>;
 
-  pokemon$!: Observable<any>;
-
-  constructor(public utils: AppUtils, public pokeApi: PokeApiService) { }
+  constructor(public utils: AppUtils, private pokeApi: PokeApiService) { }
 
   ngOnInit() {
+    this.isLoading = true;
     let now = new Date();
     let start = new Date(now.getFullYear(), 0, 0);
     let diff = (now as any) - (start as any);
     let oneDay = 1000 * 60 * 60 * 24;
     let day = Math.floor(diff / oneDay);
-    this.pokemon$ = this.pokeApi.getPokemonByNumber(day);
-  }
-
-  spritesList(): Array<string> {
-    return ['front_default', 'back_default', 'front_shiny', 'back_shiny', 'front_female', 'back_female', 'front_shiny_female', 'back_shiny_female'];
+    this.pokemon$ = this.pokeApi.getPokemonByNumber(day).pipe(
+      delay(500000),
+      tap(() => {
+        this.isLoading = false;
+      }),
+      map((res) => {
+        return this.pokeApi.generatePokemonObject(res);
+      })
+    );
   }
 }

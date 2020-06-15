@@ -8,7 +8,14 @@ let counters: {
 
 @Component({
     selector: 'Page',
-    template: `<ng-content></ng-content>`,
+    template: `
+  <div class="container-fluid">
+    <div class="row" style="height: 100%;">
+      <div class="col-12">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>`,
 })
 export class XAMLPage {
     @Input('actionBarHidden') actionBarHidden!: boolean;
@@ -61,9 +68,7 @@ export class XAMLActionBar {
 
 @Component({
     selector: 'Label',
-    template: `
-  <p>{{ text }}</p>
-    `,
+    template: `{{ text }}`,
 })
 export class XAMLLabel {
     @Input('text') text: string = '';
@@ -139,15 +144,9 @@ export class XAMLStackLayout {
 @Component({
   selector: 'GridLayout',
   template: `
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div class="grid">
-          <ng-content></ng-content>
-        </div>
-      </div>
+    <div class="grid">
+      <ng-content></ng-content>
     </div>
-  </div>
   `,
 })
 export class XAMLGridLayout implements OnDestroy {
@@ -179,6 +178,8 @@ export class XAMLGridLayout implements OnDestroy {
     return this._columns;
   }
 
+  @Input('class') class!: string;
+
   @Output('layoutChanged') layoutChanged: EventEmitter<any> = new EventEmitter();
   get layoutChangedPresent(): boolean {
     return this.layoutChanged.observers.length > 0;
@@ -194,6 +195,10 @@ export class XAMLGridLayout implements OnDestroy {
     this.isUpdatingLayout = true;
     this.gridId = counters.grid++;
     let gridEl = this.elRef.nativeElement.querySelector('.grid');
+    if (this.class) {
+      gridEl.classList.add(...this.class.split(' '));
+      this.elRef.nativeElement.classList.remove(...this.class.split(' '));
+    }
     for (let axis of ['rows', 'columns']) {
       let gridAxis: string = '';
       let axisSpaces: Array<string> = (axis == 'rows') ? this.rows.split(' ') : this.columns.split(' ');
