@@ -4,7 +4,7 @@ import { ContainerComponent } from '@src/app/shared/container/container.componen
 
 import { HomePage } from '@src/app/pages/home/home.page';
 import { TodayPage } from '@src/app/pages/today/today.page';
-import { RandomPage } from './pages/random/random.page';
+import { RandomPage } from '@src/app/pages/random/random.page';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full', },

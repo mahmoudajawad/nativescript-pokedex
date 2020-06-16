@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { DEVICE } from 'nativescript-angular/platform-providers';
 import { Device, platformNames, screen } from 'tns-core-modules/platform';
 
-import { debugLog, camelCaseToSpaced, commaSeparatedToSpaced } from '@src/app/utils/app-utils/app-utils.common';
+import { debugLog, camelCaseToSpaced, kebabCaseToSpaced, generatePokemonObject } from '@src/app/utils/app-utils/app-utils.common';
 
 
 @Injectable()
@@ -12,7 +12,9 @@ export class AppUtils {
 
     debugLog = debugLog;
     camelCaseToSpaced = camelCaseToSpaced;
-    commaSeparatedToSpaced = commaSeparatedToSpaced;
+    kebabCaseToSpaced = kebabCaseToSpaced;
+
+    generatePokemonObject = generatePokemonObject;
 
     platformVal = (vals: { web?: any; mobile: any; android: any; ios: any; }, verbose: boolean = false) => {
         return vals[this.platform(verbose)];

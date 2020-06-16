@@ -1,14 +1,14 @@
-import { platformNativeScriptDynamic } from "nativescript-angular/platform";
-import { AppOptions } from "nativescript-angular/platform-common";
+import { platformNativeScriptDynamic } from 'nativescript-angular/platform';
+import { AppOptions } from 'nativescript-angular/platform-common';
 
-import { AppModule } from "./app/app.module";
+import { AppModule } from '@src/app/app.module';
 
 // Optional - attach to livesync hooks and perfrom navigation
-import "./livesync-navigation.tns";
+import './livesync-navigation.tns';
 
 let options: AppOptions = {};
 
-if (module["hot"]) {
+if (module['hot']) {
     options.hmrOptions = {
         moduleTypeFactory: () => AppModule,
         livesyncCallback: (platformReboot) => {
@@ -18,8 +18,8 @@ if (module["hot"]) {
 
     // Path to your app module.
     // You might have to change it if your module is in a different place.
-    module["hot"].accept(["./app/app.module"], () => {
-        global["hmrRefresh"]();
+    module['hot'].accept(['./app/app.module'], () => {
+        global['hmrRefresh']();
     });
 }
 

@@ -1,6 +1,6 @@
 <PlatformView>
     <ng-template #mobile>
-        <Page style.paddingTop="16">
+        <Container style.paddingTop="16">
             <GridLayout rows="* 60">
                 <router-outlet row="0"></router-outlet>
                 <GridLayout row="1" columns="8 * 8 * 8" class="text-center" style.borderColor="black"
@@ -15,7 +15,7 @@
                     </GridLayout>
                 </GridLayout>
             </GridLayout>
-        </Page>
+        </Container>
     </ng-template>
     <ng-template #web>
         <router-outlet></router-outlet>

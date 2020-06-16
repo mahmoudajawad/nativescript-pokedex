@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy, ContentChildren, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy } from "@angular/core";
 
 let counters: {
   [key: string]: number;
@@ -7,7 +7,7 @@ let counters: {
 };
 
 @Component({
-    selector: 'Page',
+    selector: 'Container, Page',
     template: `
   <div class="container-fluid">
     <div class="row" style="height: 100%;">
@@ -17,9 +17,9 @@ let counters: {
     </div>
   </div>`,
 })
-export class XAMLPage {
-    @Input('actionBarHidden') actionBarHidden!: boolean;
-}
+export class XAMLPage { }
+
+
 
 @Component({
   selector: 'page-router-outlet',

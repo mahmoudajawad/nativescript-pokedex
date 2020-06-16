@@ -1,7 +1,7 @@
-<Page class="flex" hideActionBar>
+<Container class="flex" hideActionBar> 
     <GridLayout *ngIf="gridLayoutRows" class="p-20" [rows]="gridLayoutRows" columns="*" (layoutChanged)="onLayoutChanged($event)">
         <Label [row]="gridElementsRows[0]" text="Welcome to {{ title }}!" class="h1 text-center" textWrap="true"></Label>
         <Image [row]="gridElementsRows[1]" src="~/assets/pokeapi_logo.png" loadMode="async" stretch="aspectFit"></Image>
         <Button [row]="gridElementsRows[2]" class="btn btn-primary btn-lg" [nsRouterLink]="['/', 'app', 'today']" text="Go to Home!"></Button>
     </GridLayout>
-</Page>
+</Container>

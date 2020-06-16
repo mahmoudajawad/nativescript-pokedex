@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map, tap, delay } from 'rxjs/operators';
 
 import { AppUtils } from '@src/app/utils/app-utils/app-utils';
-import { PokeApiService } from '@src/app/services/pokeApi.service';
+import { PokeApiService } from '@src/app/services/poke-api/poke-api.service';
 import { Pokemon, POKEMON_SPRITES } from '@src/app/models/pokemon';
 
 @Component({
@@ -25,12 +25,16 @@ export class RandomPage implements OnInit {
 
   getRandomPokemon(): void {
     this.isLoading = true;
-    this.pokemon$ = this.pokeApi.getPokemonByNumber(Math.floor(Math.random() * 1000)).pipe(
+    let randomNumber: number = 808;
+    while (randomNumber > 807) {
+      randomNumber = Math.floor(Math.random() * 1000)
+    }
+    this.pokemon$ = this.pokeApi.getPokemonByNumber(randomNumber).pipe(
       tap(() => {
         this.isLoading = false;
       }),
       map((res) => {
-        return this.pokeApi.generatePokemonObject(res);
+        return this.utils.generatePokemonObject(res);
       })
     );
   }

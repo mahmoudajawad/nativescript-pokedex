@@ -37,7 +37,7 @@
         <Label row="1" col="3" class="h5 mt-2" text="Stat"></Label>
         <ng-container *ngFor="let stat of pokemon.stats; let i = index">
           <Label [row]="i + 2" col="0" class="h6" [text]="stat.id"></Label>
-          <Label [row]="i + 2" col="1" class="h6 text-center" style="text-transform: capitalize;" [text]="utils.commaSeparatedToSpaced(stat.name)"></Label>
+          <Label [row]="i + 2" col="1" class="h6 text-center" style="text-transform: capitalize;" [text]="utils.kebabCaseToSpaced(stat.name)"></Label>
           <Label [row]="i + 2" col="2" class="h6" [text]="stat.effort"></Label>
           <Label [row]="i + 2" col="3" class="h6" [text]="stat.baseStat"></Label>
         </ng-container>
