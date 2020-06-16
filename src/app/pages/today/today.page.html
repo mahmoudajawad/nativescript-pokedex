@@ -1,5 +1,9 @@
 <ActionBar title="Pokémon of Today" class="navbar-dark bg-dark"></ActionBar>
-<Page>
+<Container>
+  <!-- Refs:
+    https://stackoverflow.com/a/52750695/2393762
+    https://stackoverflow.com/a/43327466/2393762
+  -->
   <GridLayout *ngIf="(pokemon$ | async) as pokemon; else loading" class="p-20 mt-5">
     <StackLayout>
       <Label class="h3 text-center" text="#{{ pokemon.number }}"></Label>
@@ -29,6 +33,7 @@
           </ngb-carousel>
         </ng-template>
       </PlatformView>
+      <!-- Ref: https://stackoverflow.com/a/56502023/2393762 -->
       <GridLayout class="card text-white bg-info text-center" [rows]="'* * ' + '* '.repeat(pokemon.stats.length)" columns="* 3* 2* 2*">
         <Label row="0" col="0" colSpan="4" class="card-header h3 text-dark bg-white" text="Pokémon Stats"></Label>
         <Label row="1" col="0" class="h5 mt-2" text="ID"></Label>
@@ -49,4 +54,4 @@
       <Label class="h1 text-center align-self-center" text="Loading..."></Label>
     </GridLayout>
   </ng-template>
-</Page>
+</Container>

@@ -41,6 +41,7 @@ export class NSRouterLinkDirective {
     
     constructor(private router: Router) { }
 
+    // Ref: https://stackoverflow.com/a/41971514/2393762
     @HostListener('click', ['$event']) onClick($event){
         this.router.navigate((this.nsRouterLink as any))
     }
