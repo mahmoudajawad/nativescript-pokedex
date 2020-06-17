@@ -9,6 +9,10 @@ Page > GridLayout {
     min-width: 100%;
 }
 
+ActionBar + Container > div.container-fluid {
+	margin-top: 60px;
+}
+
 .grid {
     display: grid;
     height: 100%;

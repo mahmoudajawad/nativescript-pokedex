@@ -20,11 +20,11 @@ export class HomePage implements OnInit {
 
 	onLayoutChanged($event) {
 		if (this.utils.platform() == 'web' && this.utils.screenWidth() > 640) {
-			this.gridLayoutRows = '100 auto * auto 100';
-			this.gridElementsRows = ['1', '2', '3'];
+			this.gridLayoutRows = '100 auto auto * auto 100';
+			this.gridElementsRows = ['1', '2', '3', '4'];
 		} else {
-			this.gridLayoutRows = 'auto * auto';
-			this.gridElementsRows = ['0', '1', '2'];
+			this.gridLayoutRows = 'auto auto * auto';
+			this.gridElementsRows = ['0', '1', '2', '3'];
 		}
 		this.cdr.detectChanges();
 	}

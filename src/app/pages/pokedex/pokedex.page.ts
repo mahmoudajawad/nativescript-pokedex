@@ -5,6 +5,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { PokeApiService } from '@src/app/services/poke-api/poke-api.service';
 import { AppUtils } from '@src/app/utils/app-utils/app-utils';
 import { Pokemon } from '@src/app/models/pokemon';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,13 +27,17 @@ export class PokedexPage implements OnInit {
 	@ViewChild('PokemonsStack', { static: true }) PokemonsStack: ElementRef;
 	lastItemY!: number;
 
-	constructor(public utils: AppUtils, private pokeApi: PokeApiService) { }
+	constructor(public utils: AppUtils, private pokeApi: PokeApiService, private router: Router) { }
 
 	ngOnInit() {
-		this.getPokemons();
+		if (this.utils.platform() == 'web') {
+			this.getPokemons(true);
+		} else {
+			this.getPokemons();
+		}
 	}
 
-	getPokemons() {
+	getPokemons(repeat: boolean = false) {
 		this.isLoading = true;
 		let padding: number = Object.keys(this.pokemons).length + 1;
 		let pokemons$: Array<Observable<Pokemon>> = Array(this.pageSize).fill(undefined).map((n, i) => {
@@ -40,7 +45,6 @@ export class PokedexPage implements OnInit {
 				(observer) => {
 					let pokemonNumber = i + padding;
 					this.pokeApi.getPokemonByNumber(pokemonNumber).subscribe((res) => {
-						// this.pokemons[pokemonNumber] = this.utils.generatePokemonObject(res);
 						observer.next(this.utils.generatePokemonObject(res));
 						observer.complete();
 						observer.unsubscribe();
@@ -55,22 +59,38 @@ export class PokedexPage implements OnInit {
 					this.pokemons[pokemon.number] = pokemon;
 				}
 			},
-			complete: () => { this.isLoading = false; }
+			complete: () => {
+				if (repeat) {
+					this.getPokemons();
+				}
+				this.isLoading = false;
+			}
 		});
 	}
 
 	onScroll($event) {
 		if (this.isLoading) return;
-		let length = this.PokemonsStack.nativeElement.getChildrenCount();
-		let lastItem = this.PokemonsStack.nativeElement.getChildAt(length - 1);
-		let lastItemY = lastItem.getLocationRelativeTo(this.PokemonsStack.nativeElement).y;
+		if (this.utils.platform() == 'web') {
+			// Ref: https://stackoverflow.com/a/9439807/2393762
+			if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+				this.getPokemons();
+			}
+		} else {
+			let length = this.PokemonsStack.nativeElement.getChildrenCount();
+			let lastItem = this.PokemonsStack.nativeElement.getChildAt(length - 1);
+			let lastItemY = lastItem.getLocationRelativeTo(this.PokemonsStack.nativeElement).y;
 
-		let scrollView = $event.object;
-		let verticalOffset = scrollView.getActualSize().height + scrollView.verticalOffset;
+			let scrollView = $event.object;
+			let verticalOffset = scrollView.getActualSize().height + scrollView.verticalOffset;
 
-		if (verticalOffset >= lastItemY) {
-			this.getPokemons();
+			if (verticalOffset >= lastItemY) {
+				this.getPokemons();
+			}
 		}
+	}
+
+	navigatePokemon(pokemonNumber: number): void {
+		this.router.navigate(['/', 'app', 'pokemon', pokemonNumber]);
 	}
 
 }

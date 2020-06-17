@@ -6,7 +6,7 @@
 <Container>
 	<ScrollView orientation="vertical" (scroll)="onScroll($event)">
 		<StackLayout #PokemonsStack style.padding="0 8">
-			<GridLayout *ngFor="let pokemon of pokemonsList" columns="50 100 *" class="align-items-center" height="50" [nsRouterLink]="['/', 'app', 'pokemon', pokemon.number]">
+			<GridLayout *ngFor="let pokemon of pokemonsList" columns="75 100 *" class="align-items-center" [ngClass]="{'card btn btn-light col-12 col-md-6 col-lg-4': true}" height="50" style.margin="5" style.borderColor="black" style.borderWidth="1 1 1 1" (tap)="navigatePokemon(pokemon.number)" (click)="navigatePokemon(pokemon.number)">
 				<Label col="0" class="h3 text-center" [text]="pokemon.number"></Label>
 				<Image col="1" [src]="pokemon.sprites.frontDefault"></Image>
 				<Label col="2" class="h3 text-capitalize" [text]="utils.kebabCaseToSpaced(pokemon.name)"></Label>

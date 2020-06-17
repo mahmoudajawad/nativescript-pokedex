@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ElementRef, OnDestroy, ContentChild, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef, ContentChild, TemplateRef, ViewChild, HostListener } from '@angular/core';
 
 let counters: {
 	[key: string]: number;
@@ -30,7 +30,7 @@ export class XAMLPageRouterOutlet { }
 @Component({
 	selector: 'ActionBar',
 	template: `
-  <nav class="navbar navbar-expand-lg {{ (class) ? class : 'navbar-light bg-light' }}">
+  <nav class="navbar fixed-top navbar-expand-lg {{ (class) ? class : 'navbar-light bg-light' }}">
     <a class="navbar-brand" href="#">{{ title }}</a>
     <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
   
@@ -123,7 +123,13 @@ export class XAMLImage {
 	selector: 'ScrollView',
 	template: `<ng-content></ng-content>`,
 })
-export class XAMLScrollView { }
+export class XAMLScrollView {
+
+	@Output('scroll') scroll: EventEmitter<any> = new EventEmitter();
+	@HostListener('window:scroll', ['$event']) onScroll($event) {
+		this.scroll.next($event);
+	}
+}
 
 @Component({
 	selector: 'StackLayout',
@@ -154,7 +160,7 @@ export class XAMLStackLayout {
     </div>
   `,
 })
-export class XAMLGridLayout implements OnDestroy {
+export class XAMLGridLayout {
 
 	beginUpdateLayout: boolean = false;
 	isUpdatingLayout: boolean = false;
@@ -186,10 +192,10 @@ export class XAMLGridLayout implements OnDestroy {
 	@Input('class') class!: string;
 
 	@Output('layoutChanged') layoutChanged: EventEmitter<any> = new EventEmitter();
-	get layoutChangedPresent(): boolean {
-		return this.layoutChanged.observers.length > 0;
+	// Ref: https://stackoverflow.com/a/35527852/2393762
+	@HostListener('window:resize', ['$event']) onResize($event) {
+		this.layoutChanged.next($event);
 	}
-	layoutChangedHandlerId!: number;
 
 	gridId!: number;
 
@@ -223,16 +229,7 @@ export class XAMLGridLayout implements OnDestroy {
 			gridEl.style.setProperty(`grid-template-${(axis == 'rows') ? 'rows' : 'columns'}`, gridAxis);
 		}
 
-		if (this.layoutChangedPresent) {
-			this.layoutChangedHandlerId = (document as any).registerAppEventHandler('bodyResize', this, 'layoutChanged', true);
-		}
 		this.isUpdatingLayout = false;
 		this.beginUpdateLayout = true;
-	}
-
-	ngOnDestroy() {
-		if (this.layoutChangedPresent) {
-			(document as any).unregisterAppEventHandler('bodyResize', this.layoutChangedHandlerId);
-		}
 	}
 }

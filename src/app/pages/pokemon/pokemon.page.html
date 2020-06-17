@@ -3,11 +3,16 @@
 		<app-navbar-menu></app-navbar-menu>
 	</ng-template>
 </ActionBar>
-<Container>
+<Container class="text-center">
 	<!-- Refs:
     https://stackoverflow.com/a/52750695/2393762
     https://stackoverflow.com/a/43327466/2393762
   -->
+	<PlatformView>
+		<ng-template #web>
+			<Label class="btn btn-primary btn-lg mt-4" text="Back to Pokédex" [routerLink]="['/', 'app', 'pokedex']"></Label>
+		</ng-template>
+	</PlatformView>
 	<app-pokemon-info *ngIf="(pokemon$ | async) as pokemon; else loading" [pokemon]="pokemon"></app-pokemon-info>
 	<ng-template #loading>
 		<GridLayout class="" rows="*" columns="*">

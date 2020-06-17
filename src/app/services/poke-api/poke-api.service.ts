@@ -25,7 +25,11 @@ export class PokeApiService {
 		} else {
 			let httpRequest = this.http.get(`${API_URI}pokemon/${number}`);
 			httpRequest.subscribe((res) => {
-				this.cache.put(`pokemon_${number}`, JSON.stringify(res));
+				try {
+					this.cache.put(`pokemon_${number}`, JSON.stringify(res));	
+				} catch (err) {
+					console.warn(err);
+				}
 			});
 			return httpRequest;
 		}

@@ -3,8 +3,9 @@
 		(layoutChanged)="onLayoutChanged($event)">
 		<Label [row]="gridElementsRows[0]" text="Welcome to {{ title }}!" class="h1 text-center"
 			textWrap="true"></Label>
-		<Image [row]="gridElementsRows[1]" src="~/assets/pokeapi_logo.png" loadMode="async" stretch="aspectFit"></Image>
-		<Button [row]="gridElementsRows[2]" class="btn btn-primary btn-lg" [nsRouterLink]="['/', 'app', 'today']" clearHistory="true"
+		<Label [row]="gridElementsRows[1]" text="Powered by:" class="h3 text-center"></Label>
+		<Image [row]="gridElementsRows[2]" src="~/assets/pokeapi_logo.png" loadMode="async" stretch="aspectFit"></Image>
+		<Button [row]="gridElementsRows[3]" class="btn btn-primary btn-lg" [nsRouterLink]="['/', 'app', 'today']" clearHistory="true"
 			text="Go to Home!"></Button>
 	</GridLayout>
 </Container>
