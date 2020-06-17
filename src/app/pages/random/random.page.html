@@ -1,61 +1,19 @@
 <ActionBar title="Lucky Pokémon!" class="navbar-dark bg-dark">
-  <ActionItem (tap)="getRandomPokemon()"
-      ios.systemIcon="13" ios.position="right"
-      android.systemIcon="ic_popup_sync" android.position="actionBar"></ActionItem>
+	<ActionItem (tap)="getRandomPokemon()" ios.systemIcon="13" ios.position="right" android.systemIcon="ic_popup_sync"
+		android.position="actionBar"></ActionItem>
+	<ng-template #web>
+		<app-navbar-menu></app-navbar-menu>
+	</ng-template>
 </ActionBar>
 <Container>
-  <!-- Refs:
+	<!-- Refs:
     https://stackoverflow.com/a/52750695/2393762
     https://stackoverflow.com/a/43327466/2393762
   -->
-  <GridLayout *ngIf="(pokemon$ | async) as pokemon; else loading" class="p-20 mt-5">
-    <StackLayout>
-      <Label class="h3 text-center" text="#{{ pokemon.number }}"></Label>
-      <Label class="h1 text-center" style="text-transform: capitalize;" [text]="utils.kebabCaseToSpaced(pokemon.name)"></Label>
-      <Label class="h5 text-center" [text]="pokemon.types.join(' ')"></Label>
-      <PlatformView>
-        <ng-template #mobile>
-        <GridLayout columns="* * * * * * * *" background="black" height="100">
-          <Image *ngFor="let sprite of POKEMON_SPRITES; let i = index" [col]="i" [src]="pokemon.sprites[sprite]" stretch="aspectFit"></Image>
-        </GridLayout>
-        </ng-template>
-        <ng-template #web>
-          <ngb-carousel class="bg-secondary card col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 mb-3">
-            <ng-container
-              *ngFor="let sprite of POKEMON_SPRITES">
-              <ng-container *ngIf="pokemon.sprites[sprite]">
-                <ng-template ngbSlide>
-                  <div class="picsum-img-wrapper p-4 mb-4">
-                    <Image class="p-4 mb-4" [src]="pokemon.sprites[sprite]" stretch="none"></Image>
-                  </div>
-                  <div class="carousel-caption">
-                    <h3 style="text-transform: capitalize;">{{ utils.camelCaseToSpaced(sprite) }}</h3>
-                  </div>
-                </ng-template>
-              </ng-container>
-            </ng-container>
-          </ngb-carousel>
-        </ng-template>
-      </PlatformView>
-      <!-- Ref: https://stackoverflow.com/a/56502023/2393762 -->
-      <GridLayout class="card text-white bg-info text-center" [rows]="'* * ' + '* '.repeat(pokemon.stats.length)" columns="* 3* 2* 2*">
-        <Label row="0" col="0" colSpan="4" class="card-header h3 text-dark bg-white" text="Pokémon Stats"></Label>
-        <Label row="1" col="0" class="h5 mt-2" text="ID"></Label>
-        <Label row="1" col="1" class="h5 mt-2" text="Name"></Label>
-        <Label row="1" col="2" class="h5 mt-2" text="Effort"></Label>
-        <Label row="1" col="3" class="h5 mt-2" text="Stat"></Label>
-        <ng-container *ngFor="let stat of pokemon.stats; let i = index">
-          <Label [row]="i + 2" col="0" class="h6" [text]="stat.id"></Label>
-          <Label [row]="i + 2" col="1" class="h6 text-center" style="text-transform: capitalize;" [text]="utils.kebabCaseToSpaced(stat.name)"></Label>
-          <Label [row]="i + 2" col="2" class="h6" [text]="stat.effort"></Label>
-          <Label [row]="i + 2" col="3" class="h6" [text]="stat.baseStat"></Label>
-        </ng-container>
-      </GridLayout>
-    </StackLayout>
-  </GridLayout>
-  <ng-template #loading>
-    <GridLayout class="" rows="*" columns="*">
-      <Label class="h1 text-center align-self-center" text="Loading..."></Label>
-    </GridLayout>
-  </ng-template>
+	<app-pokemon-info *ngIf="(pokemon$ | async) as pokemon; else loading" [pokemon]="pokemon"></app-pokemon-info>
+	<ng-template #loading>
+		<GridLayout class="" rows="*" columns="*">
+			<Label class="h1 text-center align-self-center" text="Loading..."></Label>
+		</GridLayout>
+	</ng-template>
 </Container>

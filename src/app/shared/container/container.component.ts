@@ -1,19 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'app-container',
-    templateUrl: './container.component.html',
-    styleUrls: ['./container.component.css'],
+	selector: 'app-container',
+	templateUrl: './container.component.html',
+	styleUrls: ['./container.component.css'],
 })
 export class ContainerComponent implements OnInit {
 
-    constructor(private router: Router) { }
+	constructor(public route: ActivatedRoute, private router: Router) { }
 
-    ngOnInit() { }
+	ngOnInit() { }
 
-    isCurrentRoute(route: string): boolean {
-        return (this.router.url.split('/')[2] == route);
-    }
+	isCurrentRoute(routes: string | Array<string>): boolean {
+		if (typeof routes == 'string') {
+			routes = [routes];
+		}
+		return (routes as Array<string>).some((route) => {
+			return this.router.url.split('/')[2] == route;
+		});
+	}
 
 }

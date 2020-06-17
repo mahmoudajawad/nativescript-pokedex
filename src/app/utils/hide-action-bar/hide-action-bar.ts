@@ -1,9 +1,9 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-    selector: '[hideActionBar]'
+	selector: '[hideActionBar]'
 })
 export class HideActionBarDirective {
-    constructor() {
-    }
+	constructor() {
+	}
 }

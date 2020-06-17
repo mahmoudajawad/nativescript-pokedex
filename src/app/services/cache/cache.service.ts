@@ -15,9 +15,9 @@ export class CacheService {
 
 	remove(key: string): void {
 		return localStorage.removeItem(key);
-    }
-    
-    removeAll(key: string): void {
+	}
+
+	removeAll(): void {
 		return localStorage.clear();
-    }
+	}
 }
