@@ -1,11 +1,5 @@
 import { Component, Input, Output, EventEmitter, ElementRef, ContentChild, TemplateRef, ViewChild, HostListener } from '@angular/core';
 
-let counters: {
-	[key: string]: number;
-} = {
-	grid: 1
-};
-
 @Component({
 	selector: 'Container, Page',
 	template: `
@@ -74,19 +68,21 @@ export class XAMLLabel {
 
 @Component({
 	selector: 'Button',
-	template: `
-  <button [class]="class" (click)="onTap($event)">{{ text }}</button>
-  <!-- [routerLink]="nsRouterLink" -->
-    `,
+	template: ``,
 })
 export class XAMLButton {
-	@Input('class') class: string = '';
 	@Input('text') text: string = '';
-	// @Input('nsRouterLink') nsRouterLink!: Array<string>;
 	@Output('tap') tap: EventEmitter<any> = new EventEmitter<any>();
+	@HostListener('click', ['$event']) onScroll($event) {
+		if (this.tap.observers.length > 0) {
+			this.tap.next($event);
+		}
+	}
 
-	onTap($event) {
-		this.tap.emit($event);
+	constructor(private elRef: ElementRef) { }
+
+	ngAfterViewInit() {
+		this.elRef.nativeElement.innerHTML = this.text;
 	}
 }
 
@@ -135,30 +131,17 @@ export class XAMLScrollView {
 	selector: 'StackLayout',
 	template: `
   <div class="container-fluid">
-      <div class="row">
+      <div class="row stack-layout-row">
         <ng-content></ng-content>
       </div>
   </div>
-    `,
+	`,
 })
-export class XAMLStackLayout {
-
-	constructor(private elRef: ElementRef) { }
-
-	ngAfterContentInit() {
-		this.elRef.nativeElement.querySelectorAll('div.container-fluid > div.row > *').forEach((n, i) => {
-			n.classList.add('col-12')
-		});
-	}
-}
+export class XAMLStackLayout { }
 
 @Component({
 	selector: 'GridLayout',
-	template: `
-    <div class="grid">
-      <ng-content></ng-content>
-    </div>
-  `,
+	template: `<ng-content></ng-content>`,
 })
 export class XAMLGridLayout {
 
@@ -189,27 +172,18 @@ export class XAMLGridLayout {
 		return this._columns;
 	}
 
-	@Input('class') class!: string;
-
 	@Output('layoutChanged') layoutChanged: EventEmitter<any> = new EventEmitter();
 	// Ref: https://stackoverflow.com/a/35527852/2393762
 	@HostListener('window:resize', ['$event']) onResize($event) {
 		this.layoutChanged.next($event);
 	}
 
-	gridId!: number;
-
 	constructor(private elRef: ElementRef) { }
 
 	ngAfterContentInit() {
 		if (this.isUpdatingLayout) return;
 		this.isUpdatingLayout = true;
-		this.gridId = counters.grid++;
-		let gridEl = this.elRef.nativeElement.querySelector('.grid');
-		if (this.class) {
-			gridEl.classList.add(...this.class.split(' '));
-			this.elRef.nativeElement.classList.remove(...this.class.split(' '));
-		}
+		let gridEl = this.elRef.nativeElement;
 		for (let axis of ['rows', 'columns']) {
 			let gridAxis: string = '';
 			let axisSpaces: Array<string> = (axis == 'rows') ? this.rows.split(' ') : this.columns.split(' ');

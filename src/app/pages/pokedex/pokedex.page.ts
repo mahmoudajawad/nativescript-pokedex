@@ -76,6 +76,7 @@ export class PokedexPage implements OnInit {
 				this.getPokemons();
 			}
 		} else {
+			// Ref: https://stackoverflow.com/a/54483235/2393762
 			let length = this.PokemonsStack.nativeElement.getChildrenCount();
 			let lastItem = this.PokemonsStack.nativeElement.getChildAt(length - 1);
 			let lastItemY = lastItem.getLocationRelativeTo(this.PokemonsStack.nativeElement).y;

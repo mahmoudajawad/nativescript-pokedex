@@ -1,5 +1,5 @@
 <Container class="flex" hideActionBar>
-	<GridLayout *ngIf="gridLayoutRows" class="p-20" [rows]="gridLayoutRows" columns="*"
+	<GridLayout *ngIf="gridLayoutRows" class="p-20 py-2" [rows]="gridLayoutRows" columns="*"
 		(layoutChanged)="onLayoutChanged($event)">
 		<Label [row]="gridElementsRows[0]" text="Welcome to {{ title }}!" class="h1 text-center"
 			textWrap="true"></Label>

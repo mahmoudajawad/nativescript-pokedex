@@ -9,15 +9,24 @@ Page > GridLayout {
     min-width: 100%;
 }
 
+GridLayout {
+	display: grid !important;
+	height: 100% !important;
+}
+
+GridLayout.card {
+	padding: 0;
+}
+
+.stack-layout-row > *:not(.col) {
+	-ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
 ActionBar + Container > div.container-fluid {
 	margin-top: 60px;
 }
-
-.grid {
-    display: grid;
-    height: 100%;
-}
-
 
 Image {
     width: 100%;
@@ -36,13 +45,4 @@ Image[stretch="aspectFill"] > img {
     object-fit: cover;
     width: 100%;
     height: 100%;
-}
-
-
-Button[text] {
-    background: none !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    cursor: default !important;
 }

@@ -10,7 +10,7 @@
   -->
 	<PlatformView>
 		<ng-template #web>
-			<Label class="btn btn-primary btn-lg mt-4" text="Back to Pokédex" [routerLink]="['/', 'app', 'pokedex']"></Label>
+			<Button class="btn btn-primary btn-lg mt-4" text="Back to Pokédex" [routerLink]="['/', 'app', 'pokedex']"></Button>
 		</ng-template>
 	</PlatformView>
 	<app-pokemon-info *ngIf="(pokemon$ | async) as pokemon; else loading" [pokemon]="pokemon"></app-pokemon-info>

@@ -28,7 +28,7 @@
 			</ng-template>
 		</PlatformView>
 		<!-- Ref: https://stackoverflow.com/a/56502023/2393762 -->
-		<GridLayout class="card text-white bg-info text-center" [ngClass]="{'col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3': true}" [rows]="'* * ' + '* '.repeat(pokemon.stats.length)"
+		<GridLayout class="card text-white bg-info text-center col col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3" [rows]="'* * ' + '* '.repeat(pokemon.stats.length)"
 			columns="* 3* 2* 2*">
 			<Label row="0" col="0" colSpan="4" class="card-header h3 text-dark bg-white" text="Pokémon Stats"></Label>
 			<Label row="1" col="0" class="h5 mt-2" text="ID"></Label>
