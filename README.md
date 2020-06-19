@@ -2,6 +2,8 @@
 
 This project is a PoC for ultimate code sharing across web and mobile using Nativescript with Angular.
 
+Read more about this project motivations at: [https://dev.to/mahmoudajawad/my-endeavor-for-ultimate-code-sharing-in-nativescript-angular-2m73](https://dev.to/mahmoudajawad/my-endeavor-for-ultimate-code-sharing-in-nativescript-angular-2m73).
+
 ## Demo
 The results of this project are available as Github-Pages-hosted app at: [https://mahmoudajawad.github.io/nativescript-pokedex/dist/nativescript-pokedex/](https://mahmoudajawad.github.io/nativescript-pokedex/dist/nativescript-pokedex/).
 
