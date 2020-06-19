@@ -68,7 +68,7 @@ export class XAMLLabel {
 
 @Component({
 	selector: 'Button',
-	template: ``,
+	template: `{{ text }}`,
 })
 export class XAMLButton {
 	@Input('text') text: string = '';
@@ -78,18 +78,12 @@ export class XAMLButton {
 			this.tap.next($event);
 		}
 	}
-
-	constructor(private elRef: ElementRef) { }
-
-	ngAfterViewInit() {
-		this.elRef.nativeElement.innerHTML = this.text;
-	}
 }
 
 @Component({
 	selector: 'Image',
 	template: `
-  <img [src]="_src" [attr.async]="asyncAttrVal()">
+  <img [src]="_src" [attr.async]="(loadMode == 'async') ? 'on' : 'off'">
     `,
 })
 export class XAMLImage {
@@ -109,10 +103,6 @@ export class XAMLImage {
 	}
 
 	@Input('loadMode') loadMode: 'async' | 'sync' = 'async';
-
-	asyncAttrVal(): 'on' | 'off' {
-		return (this.loadMode == 'async') ? 'on' : 'off';
-	}
 }
 
 @Component({
