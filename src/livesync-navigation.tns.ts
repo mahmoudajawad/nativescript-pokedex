@@ -1,17 +1,17 @@
-import { NgZone } from "@angular/core";
-import { Router } from "@angular/router";
-import { onBeforeLivesync, onAfterLivesync } from "nativescript-angular/platform-common";
-import { RouterExtensions } from "nativescript-angular/router";
+import { NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { onBeforeLivesync, onAfterLivesync, RouterExtensions } from '@nativescript/angular';
 
 // Ref: https://github.com/NativeScript/nativescript-angular/wiki/NativeScript-5.2-HMR-with-Angular
 
 let cachedUrl: string;
 onBeforeLivesync.subscribe(moduleRef => {
-	console.log("#### onBeforeLivesync");
+	console.log('#### onBeforeLivesync');
 	if (moduleRef) {
 		const router = <Router>moduleRef.injector.get(Router);
 		cachedUrl = router.url;
-		console.log("-------> Caching URL: " + cachedUrl);
+		console.log(`-------> Caching URL: ${cachedUrl}`);
 	}
 });
 

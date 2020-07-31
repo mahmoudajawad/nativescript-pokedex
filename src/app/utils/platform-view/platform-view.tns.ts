@@ -1,6 +1,5 @@
 import { Component, Inject, Input, TemplateRef, ElementRef, ContentChild } from '@angular/core';
-import { Device, platformNames } from 'tns-core-modules/platform';
-import { DEVICE } from 'nativescript-angular/platform-providers';
+import { isAndroid, isIOS, platformNames } from '@nativescript/core';
 
 @Component({
 	selector: 'PlatformView',
@@ -12,14 +11,14 @@ export class PlatformViewComponent {
 	@ContentChild('android', { static: true }) android: TemplateRef<ElementRef>;
 	@ContentChild('ios', { static: true }) ios: TemplateRef<ElementRef>;
 
-	constructor(@Inject(DEVICE) private device: Device) { }
+	constructor() { }
 
 	viewTemplate(): TemplateRef<ElementRef> {
 		if (this.verbose == false) {
 			return this.mobile;
-		} else if (this.verbose == true && this.device.os === platformNames.android) {
+		} else if (isAndroid) {
 			return this.android;
-		} else if (this.verbose == true && this.device.os === platformNames.ios) {
+		} else if (isIOS) {
 			return this.ios;
 		}
 	}

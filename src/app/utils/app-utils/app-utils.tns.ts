@@ -1,6 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
-import { DEVICE } from 'nativescript-angular/platform-providers';
-import { Device, platformNames, screen } from 'tns-core-modules/platform';
+import { Injectable } from '@angular/core';
+import { isAndroid, isIOS, Screen } from '@nativescript/core';
 
 import { debugLog, camelCaseToSpaced, kebabCaseToSpaced, generatePokemonObject } from '@src/app/utils/app-utils/app-utils.common';
 
@@ -8,7 +7,7 @@ import { debugLog, camelCaseToSpaced, kebabCaseToSpaced, generatePokemonObject }
 @Injectable()
 export class AppUtils {
 
-	constructor(@Inject(DEVICE) private device: Device) { }
+	constructor() { }
 
 	debugLog = debugLog;
 	camelCaseToSpaced = camelCaseToSpaced;
@@ -22,9 +21,9 @@ export class AppUtils {
 
 	platform = (verbose: boolean = false): 'web' | 'mobile' | 'android' | 'ios' => {
 		if (verbose) {
-			if (this.device.os === platformNames.android) {
+			if (isAndroid) {
 				return 'android';
-			} else if (this.device.os === platformNames.ios) {
+			} else if (isIOS) {
 				return 'ios';
 			}
 		}
@@ -32,6 +31,6 @@ export class AppUtils {
 	}
 
 	screenWidth = (): number => {
-		return screen.mainScreen.widthDIPs;
+		return Screen.mainScreen.widthDIPs;
 	}
 }

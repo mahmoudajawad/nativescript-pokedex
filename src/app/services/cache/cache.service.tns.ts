@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import * as applicationSettings from 'tns-core-modules/application-settings';
+import { ApplicationSettings } from '@nativescript/core';
 
 @Injectable()
 export class CacheService {
@@ -8,13 +8,13 @@ export class CacheService {
 	constructor() { }
 
 	get(key: string): string {
-		return applicationSettings.getString(key);
+		return ApplicationSettings.getString(key);
 	}
 	put(key: string, val: string): void {
-		applicationSettings.setString(key, val);
+		ApplicationSettings.setString(key, val);
 	}
 
 	remove(key: string): void {
-		applicationSettings.remove(key);
+		ApplicationSettings.remove(key);
 	}
 }

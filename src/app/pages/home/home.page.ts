@@ -26,6 +26,5 @@ export class HomePage implements OnInit {
 			this.gridLayoutRows = 'auto auto * auto';
 			this.gridElementsRows = ['0', '1', '2', '3'];
 		}
-		this.cdr.detectChanges();
 	}
 }
